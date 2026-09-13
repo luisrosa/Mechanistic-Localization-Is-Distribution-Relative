@@ -1,1 +1,0 @@
-The ICLR archive in this directory is intended to be a byte-preserving ZIP of the existing `papers/mechanistic_localization_iclr` directory from the development repository. No manuscript source is regenerated or rewritten for this archive.
