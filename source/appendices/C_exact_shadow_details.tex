@@ -1,0 +1,174 @@
+\section{Further structure of the exact support shadow}
+\label{app:exact-shadow-details}
+
+This appendix records exact-support structure that is useful for auditing and extending the support shadow but is not required for the main narrative.
+
+\subsection{Support transport}
+
+For finite discrete spaces define
+\[
+\supp\mu:=\{x:\mu(x)>0\}.
+\]
+
+\begin{proposition}[Finite support shadow]
+\label{prop:app-support-shadow-functor}
+If $f:(X,\mu)\to(Y,\nu)$ is a morphism in the finite discrete subcategory of $\int\Prob$, then
+\[
+\supp\nu=f(\supp\mu).
+\]
+Consequently support defines a functor from finite state-decorated spaces to finite sets by restricting each deterministic map to the support of its source state.
+\end{proposition}
+
+\begin{proof}
+For $y\in Y$,
+\[
+\nu(y)
+=(f_*\mu)(y)
+=\sum_{x:f(x)=y}\mu(x),
+\]
+which is positive exactly when some $x\in\supp\mu$ satisfies $f(x)=y$.
+\end{proof}
+
+\subsection{Measure-class invariance of exact realization}
+
+Let
+\[
+\Rcal^{\mathrm{a.s.}}_\Phi(\mu)
+:=
+\{K\subseteq J:\exists h:Z_K\to Y\text{ measurable with }\Phi=hQ_K\ \mu\text{-a.s.}\}.
+\]
+
+\begin{proposition}[Exact localization factors through measure class]
+\label{thm:app-measure-class-invariance}
+If $\mu\sim\nu$, then
+\[
+\Rcal^{\mathrm{a.s.}}_\Phi(\mu)
+=
+\Rcal^{\mathrm{a.s.}}_\Phi(\nu).
+\]
+\end{proposition}
+
+\begin{proof}
+For fixed $K$ and $h$, let
+\[
+B_{K,h}:=\{x:\Phi(x)\neq h(Q_K(x))\}.
+\]
+The decoder realizes $\Phi$ exactly under $\mu$ iff $B_{K,h}$ is $\mu$-null, which under $\mu\sim\nu$ is equivalent to being $\nu$-null. Existence of a realizing decoder is therefore the same under both laws.
+\end{proof}
+
+Together with Proposition~\ref{prop:app-measure-class-pushforward}, this gives a process-level coarse-graining: equivalent source states remain equivalent at every deterministic cut, and exact almost-sure localization cannot distinguish their different positive weights.
+
+\subsection{Support restriction and truth-valued localization}
+
+For finite $S\subseteq X$, write
+\[
+\Rcal_\Phi(S)
+:=
+\{K\subseteq J:\exists h:Q_K(S)\to Y\text{ with }\Phi|_S=hQ_K|_S\}.
+\]
+
+\begin{proposition}[Support restriction]
+\label{thm:app-support-restriction-shadow}
+If $S\subseteq T$, then
+\[
+\Rcal_\Phi(T)\subseteq\Rcal_\Phi(S).
+\]
+\end{proposition}
+
+\begin{proof}
+Any decoder that works on $T$ still works after restriction to $S$.
+\end{proof}
+
+Write
+\[
+\Supp(X):=(\mathcal P(X),\subseteq),
+\qquad
+\Two=\{0<1\}.
+\]
+Exact support localization can be represented as
+\begin{equation}
+\Loc_{\Phi,Q}:
+\Supp(X)^{\mathrm{op}}\times\Bool_J
+\longrightarrow\Two,
+\label{eq:app-support-shadow-profunctor}
+\end{equation}
+with $\Loc_{\Phi,Q}(S,K)=1$ exactly when $K\in\Rcal_\Phi(S)$. Currying gives
+\begin{equation}
+\mathscr R_{\Phi,Q}:
+\Supp(X)^{\mathrm{op}}
+\longrightarrow
+\Up(\Bool_J),
+\qquad
+S\longmapsto\Rcal_\Phi(S).
+\label{eq:app-support-shadow-localization-functor}
+\end{equation}
+This truth-valued object remembers exact factorization on support and forgets all probability weights.
+
+\subsection{Discernibility clutters and blockers}
+
+For a map $f:S\to T$, write
+\[
+\Eq(f)
+:=
+\{(x,x')\in S^2:f(x)=f(x')\}.
+\]
+For a phenomenon-distinguished pair $x,x'\in S$, define
+\[
+E(x,x')
+:=
+\{j\in J:Q_j(x)\neq Q_j(x')\},
+\]
+and the distinction hypergraph
+\[
+\Hcal_\Phi(S)
+:=
+\{E(x,x'):x,x'\in S,\ \Phi(x)\neq\Phi(x')\}.
+\]
+For a hypergraph $\Hcal\subseteq2^J$, let
+\[
+\Hit(\Hcal)
+:=
+\{K\subseteq J:K\cap E\neq\varnothing\text{ for every }E\in\Hcal\}.
+\]
+The main text records the equivalence
+\[
+K\in\Rcal_\Phi(S)
+\Longleftrightarrow
+\Eq(Q_K|_S)\subseteq\Eq(\Phi|_S)
+\Longleftrightarrow
+K\text{ hits every }E\in\Hcal_\Phi(S).
+\]
+
+Deleting hyperedges that strictly contain another gives the clutter
+\[
+\Ccal_\Phi(S):=\Min_{\subseteq}\Hcal_\Phi(S).
+\]
+If
+\[
+b(\Ccal):=\Min_{\subseteq}\Hit(\Ccal)
+\]
+is the blocker, then the inclusion-minimal exact localizations satisfy
+\begin{equation}
+\Mcal_\Phi(S)=b(\Ccal_\Phi(S)).
+\label{eq:app-minimal-localizations-blocker-shadow}
+\end{equation}
+This is classical transversal / decision-reduct structure. It makes explicit why an inclusion-minimal circuit need not be the unique minimal circuit.
+
+\subsection{Uniform empirical defect and the classical \texorpdfstring{$g_3$}{g3} error}
+
+Suppose $S=\{x_1,\ldots,x_n\}$ carries the uniform empirical law and use $0$--$1$ loss. For each receiver value $z$, let
+\[
+n_{z,y}
+:=
+\bigl|\{x\in S:Q_K(x)=z,\ \Phi(x)=y\}\bigr|.
+\]
+The finite Bayes formula gives
+\begin{equation}
+\delta_{\mathrm{unif}(S)}(K)
+=
+1-\frac1n\sum_z\max_y n_{z,y}.
+\label{eq:app-empirical-defect-g3}
+\end{equation}
+To make the functional dependency $K\to d$ exact by deleting rows, one may retain at most one decision value inside each $Q_K$-equivalence class. The largest exact subtable therefore keeps $\sum_z\max_y n_{z,y}$ rows. Hence \eqref{eq:app-empirical-defect-g3} is exactly the classical $g_3$ deletion error for an approximate functional dependency \citep{kivinen1995approximate}.
+
+Variable-precision and decision-theoretic rough-set models likewise study probabilistic or loss-sensitive relaxations of exact reducts \citep{ziarko1993variable,zhao2008attribute}. The paper's distributional content lies upstream of this finite empirical shadow: the probability state is transported through one neural process and receiver refinement is compared with context invariance before these coarse-grainings are taken.

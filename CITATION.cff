@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript described in preferred-citation."
+title: "Mechanistic Localization Is Distribution-Relative source repository"
+type: software
+authors:
+  - family-names: "Rosario Freytes"
+    given-names: "Luis F."
+    affiliation: "University of Michigan, Ann Arbor"
+version: "1.0"
+date-released: "2026-09-12"
+license: CC-BY-4.0
+repository-code: "https://github.com/luisrosa/Mechanistic-Localization-Is-Distribution-Relative"
+abstract: >-
+  Source, validation code, and submission artifacts for a theory of mechanistic
+  localization in which the realized probability state is an explicit argument
+  of the localization claim. The paper separates receiver sufficiency from
+  context invariance and identifies exact support localization as a zero-loss
+  shadow of the distribution-relative problem.
+keywords:
+  - mechanistic interpretability
+  - neural networks
+  - localization
+  - circuits
+  - distribution shift
+  - representation
+preferred-citation:
+  type: article
+  title: "Mechanistic Localization Is Distribution-Relative: Receiver Sufficiency, Context Invariance, and the Support Shadow"
+  authors:
+    - family-names: "Rosario Freytes"
+      given-names: "Luis F."
+  year: 2026
+  month: 9
+  notes: "Preprint; ICLR 2027 submission version archived in this repository"

@@ -1,0 +1,133 @@
+\section{The exact support shadow and fixed-network non-canonicity}
+\label{sec:exact-shadow}
+\label{sec:support-shadow}
+\label{sec:support-universality}
+
+The distributional theory distinguishes full-support laws that favor opposite receiver-level rules. Exact localization cannot. We now take the maximal receiver-sufficiency problem to zero loss, isolating what the access itself preserves before any further restriction on downstream implementation. Exact localization is obtained after the realized probability state is coarse-grained to its null-set structure:
+\begin{equation}
+\boxed{
+\text{probability state}
+\longrightarrow
+\text{measure class}
+\underset{\text{finite discrete}}{\cong}
+\text{support}
+\longrightarrow
+\text{functional dependency / reduct}.
+}
+\label{eq:coarse-chain}
+\end{equation}
+The first arrow forgets probability weights while retaining null sets; in finite discrete spaces those null sets are equivalent to support.
+
+A receiver family $K$ exactly realizes $\Phi$ under $\mu$ if some measurable $h:Z_K\to Y$ satisfies $\Phi=hQ_K$ $\mu$-almost surely. Write
+\[
+\Rcal_\Phi^{\mathrm{a.s.}}(\mu)
+:=
+\{K\subseteq J:\exists h\text{ with }\Phi=hQ_K\ \mu\text{-a.s.}\}.
+\]
+
+\begin{proposition}[Exact localization depends only on measure class]
+\label{thm:measure-class-invariance}
+If $\mu\sim\nu$ have the same null measurable sets, then
+\[
+\Rcal_\Phi^{\mathrm{a.s.}}(\mu)
+=
+\Rcal_\Phi^{\mathrm{a.s.}}(\nu).
+\]
+\end{proposition}
+\begin{proof}
+For fixed $K$ and $h$, the disagreement set $\{x:\Phi(x)\neq h(Q_K(x))\}$ is null under $\mu$ exactly when it is null under $\nu$.
+\end{proof}
+
+Now assume $X$, $Y$, and the realized receiver images are finite, take $\mathsf A=Y$, use $0$--$1$ loss, and let $S=\supp\mu$. Define
+\[
+\Rcal_\Phi(S)
+:=
+\{K\subseteq J:\exists h:Q_K(S)\to Y\text{ with }\Phi|_S=hQ_K|_S\},
+\]
+and for $f:S\to T$ write $\Eq(f)=\{(x,x')\in S^2:f(x)=f(x')\}$. We call this exact support-level object the support shadow because it records which target distinctions survive on the realized support while forgetting how probability mass is distributed across that support.
+
+\begin{proposition}[Finite exact localization is the support shadow]
+\label{thm:zero-defect-support-shadow}
+\label{thm:quotient-realization-shadow}
+\label{prop:discernibility-representation}
+For every $K\subseteq J$,
+\begin{equation}
+\delta_\mu(K)=0
+\iff
+\Phi|_S\text{ factors through }Q_K|_S
+\iff
+\Eq(Q_K|_S)\subseteq\Eq(\Phi|_S).
+\label{eq:zero-kernel-shadow}
+\end{equation}
+For each pair with $\Phi(x)\neq\Phi(x')$, let
+\[
+E(x,x'):=\{j\in J:Q_j(x)\neq Q_j(x')\},
+\qquad
+\Hcal_\Phi(S):=\{E(x,x'):\Phi(x)\neq\Phi(x')\}.
+\]
+Each $E(x,x')$ is exactly the set of receiver coordinates capable of distinguishing one target-relevant pair. Then
+\begin{equation}
+\Rcal_\Phi(S)=\Hit(\Hcal_\Phi(S)),
+\label{eq:hitting-shadow}
+\end{equation}
+where $\Hit$ denotes the family of hitting sets.
+\end{proposition}
+\begin{proof}
+Zero $0$--$1$ risk on finite support is equality at every point of positive mass. A decoder through $Q_K$ exists exactly when $Q_K$ never identifies two support points that $\Phi$ distinguishes. Equivalently, at least one receiver in $K$ separates every phenomenon-distinguished pair.
+\end{proof}
+
+Equation~\eqref{eq:zero-kernel-shadow} is the exact access test: if it fails, no downstream architecture receiving only $Q_K(X)$ can realize $\Phi$ on $S$. A restricted decoder class can impose an additional implementation constraint even when it holds. Accordingly, the architecture-specific exact family
+\[
+\Rcal^{\mathscr H}_\Phi(S)
+:=
+\{K\subseteq J:\exists h\in\mathscr H_K\text{ with }\Phi|_S=hQ_K|_S\}
+\]
+satisfies $\Rcal^{\mathscr H}_\Phi(S)\subseteq\Rcal_\Phi(S)$.
+
+The finite zero-loss coarse-graining lands exactly on functional-dependency and decision-reduct structure: equation~\eqref{eq:zero-kernel-shadow} is the database functional dependency $K\to d$ when the receivers are condition attributes and $\Phi$ is the decision attribute, and the inclusion-minimal realizing sets are the corresponding decision reducts / minimal transversals \citep{skowron1992discernibility,beeri1984armstrong,demetrovics1979keys}. This identifies classical reduct structure as the exact support shadow of the distribution-relative localization problem.
+
+Support restriction is antitone. If $S\subseteq T$, then
+\begin{equation}
+\Rcal_\Phi(T)\subseteq\Rcal_\Phi(S),
+\label{eq:support-restriction-main}
+\end{equation}
+because a decoder valid on $T$ remains valid on $S$. The inclusion-minimal family
+\[
+\Mcal_\Phi(S):=\Min_{\subseteq}\Rcal_\Phi(S)
+\]
+is generally an antichain rather than a singleton. Minimality therefore provides no canonical exact circuit. Appendix~C records the blocker formulation, support functoriality, and the finite empirical $g_3$ correspondence.
+
+Fixing the network does not fix the exact localization family. The question is how much variation remains once the architecture, target, and receiver interface are all frozen. Within the upward-closure constraint already forced by passive receiver inclusion, one fixed elementary network realizes every admissible family by support variation alone. Let $J\neq\varnothing$ and fix
+\begin{equation}
+\NN_J:
+\{0,1\}^J
+\xrightarrow{\Id}
+\{0,1\}^J
+\xrightarrow{\mathrm{OR}}
+\{0,1\},
+\label{eq:fixed-or}
+\end{equation}
+with coordinate receivers $Q_j(v)=v_j$ and phenomenon $\Phi(v)=\mathrm{OR}(v)$. Classical candidate-key and reduct constructions already show broad realizability of Sperner systems \citep{demetrovics1979keys,demetrovics2014reducts}. Here the architecture, binary coordinate interface, and target function are all frozen; only the admitted support changes. For a family $\mathcal F\subseteq2^J$, let $\Hit(\mathcal F)$ be the sets intersecting every member of $\mathcal F$. If $F\subseteq2^J$ is nonempty and upward closed, define
+\begin{equation}
+\sigma_{\mathrm{OR}}(F)
+:=
+\{0^J\}\cup\{\mathbf1_E:E\in\Hit(F)\}.
+\label{eq:or-support}
+\end{equation}
+
+\begin{theorem}[Fixed-network support universality]
+\label{thm:fixed-or-support-universality}
+For every nonempty upward-closed $F\subseteq2^J$,
+\begin{equation}
+\boxed{
+\Rcal_\Phi(\sigma_{\mathrm{OR}}(F))=F.
+}
+\label{eq:or-universality}
+\end{equation}
+Consequently every nonempty antichain $\mathcal A\subseteq2^J$ occurs as $\Mcal_\Phi(S)$ for some support $S$ of this one fixed network.
+\end{theorem}
+\begin{proof}
+The phenomenon-distinguished pairs are the anchor $0^J$ against witnesses $\mathbf1_E$, and their receiver-separation sets are exactly $E$. Hence the discernibility hypergraph of $\sigma_{\mathrm{OR}}(F)$ is $\Hit(F)$. For an upward family, $\Hit(\Hit(F))=F$: if $K\notin F$, upward closure implies every member of $F$ intersects $J\setminus K$, so $J\setminus K\in\Hit(F)$ and $K$ fails to hit it. Equation~\eqref{eq:hitting-shadow} gives \eqref{eq:or-universality}. For an antichain $\mathcal A$, take $F=\uparrow\mathcal A$.
+\end{proof}
+
+This exhausts the upward-closure constraint imposed by passive receiver inclusion: at the exact receiver-sufficiency level, every nonempty upward-closed localization family occurs in the same fixed network under support variation alone, even though the architecture, target, and receiver granularity remain fixed. Architecture therefore does not determine a canonical exact localization family. Restricting the admissible decoder class defines a finer architecture-specific problem; it does not change the universality result for the information already exposed at the receiver interface. Appendix~D gives stronger order-profile consequences. The theorem is a structural boundary on exact localization; empirical multiplicity in a particular language model can have additional causes \citep{meloux2025identifiable,chen2026allcircuits}.
