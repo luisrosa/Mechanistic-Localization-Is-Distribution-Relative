@@ -3,7 +3,7 @@
 **Receiver Sufficiency, Context Invariance, and the Support Shadow**  
 Luis F. Rosario Freytes — University of Michigan
 
-**[Read the paper](paper.pdf)** · **[LaTeX source](source/)**
+**[Read the paper](mechanistic_localization_is_distribution_relative.pdf)** · **[LaTeX source](source/)**
 
 Mechanistic interpretability often talks as if a circuit were a property of the network alone: find the right heads, neurons, features, or edges and you have found where the mechanism is.
 
