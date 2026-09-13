@@ -1,9 +1,11 @@
 .PHONY: all paper check packages iclr arxiv submission verify clean
 
+PDF := mechanistic_localization_is_distribution_relative.pdf
+
 all: paper check
 
 paper: arxiv
-	cp arxiv/main.pdf paper.pdf
+	cp arxiv/main.pdf $(PDF)
 
 check:
 	python3 scripts/check_examples.py
@@ -23,4 +25,4 @@ verify: packages
 	python3 scripts/verify_packages.py
 
 clean:
-	rm -rf arxiv iclr2027 submission-zips .build paper.pdf
+	rm -rf arxiv iclr2027 submission-zips .build $(PDF)
