@@ -1,0 +1,20 @@
+\section{Introduction}
+\label{sec:introduction}
+
+A circuit-localization claim names a subset of internal components and asks whether the exposed state through those components suffices for a phenomenon. Decision-theoretic representation theory asks whether an exposed representation is Bayes-sufficient for a specified distribution and loss \citep{sevetlidis2026bayes}. That fixes the probability law while asking what the representation makes available. Mechanistic localization then asks what survives when the network, receiver, phenomenon, loss, and literal support stay fixed while the realized probability law changes.
+
+Even the smallest finite example shows that the receiver-level rule need not survive. Let
+\[
+X=\{0,1\}^2,\qquad
+\Phi(x_1,x_2)=x_1,\qquad
+Q_2(x_1,x_2)=x_2.
+\]
+For $0<\eta<1/2$, let $\mu_\eta$ put mass $(1-\eta)/2$ on each diagonal point $00,11$ and mass $\eta/2$ on each off-diagonal point. Let $\nu_\eta$ reverse those weights. The represented state space, receiver, phenomenon, and literal support are unchanged:
+\[
+\supp\mu_\eta=\supp\nu_\eta=X.
+\]
+Under $0$--$1$ loss, however, the optimal rule through the same receiver reverses,
+\[
+h_{\mu_\eta}(z)=z,\qquad h_{\nu_\eta}(z)=1-z,
+\]
+and has error $\eta$ in either state. Their equal mixture is uniform; there $Q_2$ carries no predictive information about $\Phi$ and the minimum error is $1/2$. Passing from the probability law to its support erases exactly the information that selects the receiver-level rule. Thus neither a component set nor a support-relative circuit determines the receiver-level realization selected by the probability distribution. We therefore treat that distribution as part of the realized computational state.
