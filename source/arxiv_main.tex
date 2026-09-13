@@ -1,14 +1,12 @@
-\documentclass[11pt]{article}
+\documentclass{article}
 
-\usepackage[margin=1in]{geometry}
-\usepackage{lmodern}
+\usepackage{iclr2027_conference,times}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{xcolor}
 \usepackage{mathrsfs}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{microtype}
-\usepackage[round,authoryear]{natbib}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
 \usepackage[nameinlink,noabbrev]{cleveref}
@@ -63,9 +61,24 @@
 \newcommand{\Bcal}{\mathcal{B}}
 \newcommand{\Gcal}{\mathcal{G}}
 
-\title{Mechanistic Localization Is Distribution-Relative:\\Receiver Sufficiency, Context Invariance, and the Support Shadow}
-\author{Luis F. Rosario Freytes\\University of Michigan}
-\date{September 2026}
+\title{Mechanistic Localization Is\\
+Distribution-Relative:\\
+Receiver Sufficiency, Context Invariance,\\
+and the Support Shadow}
+\author{\textbf{Luis F. Rosario Freytes}\\University of Michigan}
+
+% Keep the public preprint visually identical to the conference manuscript while
+% removing review-only furniture.  This exposes the author without claiming
+% conference publication status and disables the anonymous review ruler.
+\iclrfinalcopy
+\makeatletter
+\def\@maketitle{\vbox{\hsize\textwidth
+{\LARGE\sc \@title\par}
+\vskip 0.28in
+\begin{tabular}[t]{l}\@author\end{tabular}
+\vskip 0.28in}}
+\makeatother
+\lhead{}
 
 \begin{document}
 \maketitle
@@ -86,8 +99,8 @@ In this work, generative AI tools were used to help develop the theoretical and 
 \section*{Reproducibility statement}
 The paper is theoretical. Assumptions and proofs of the two headline results appear in the main text. Auxiliary proofs, finite structural results, exact-shadow constructions, and the finite regression suite are supplied in the appendices and accompanying source materials so that the formal claims can be audited independently.
 
-\bibliographystyle{plainnat}
 \bibliography{references}
+\bibliographystyle{iclr2027_conference}
 
 \appendix
 \input{appendices/A_process_and_presentation_details}

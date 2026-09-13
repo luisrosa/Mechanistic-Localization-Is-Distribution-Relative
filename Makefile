@@ -1,6 +1,11 @@
-.PHONY: all check packages iclr arxiv pdf verify hashes clean
+.PHONY: all paper check packages iclr arxiv submission verify clean
 
-all: check packages iclr arxiv pdf verify hashes
+PDF := mechanistic_localization_is_distribution_relative.pdf
+
+all: paper check
+
+paper: arxiv
+	cp arxiv/main.pdf $(PDF)
 
 check:
 	python3 scripts/check_examples.py
@@ -14,15 +19,10 @@ iclr: packages
 arxiv: packages
 	$(MAKE) -C arxiv
 
-pdf: arxiv
-	cp arxiv/main.pdf mechanistic_localization_is_distribution_relative.pdf
+submission: check iclr arxiv verify
 
 verify: packages
 	python3 scripts/verify_packages.py
 
-hashes: pdf verify
-	python3 scripts/write_release_hashes.py
-
 clean:
-	rm -rf arxiv iclr2027 submission-zips .build mechanistic_localization_is_distribution_relative.pdf
-	rm -f releases/v1.0/SHA256SUMS.txt
+	rm -rf arxiv iclr2027 submission-zips .build $(PDF)

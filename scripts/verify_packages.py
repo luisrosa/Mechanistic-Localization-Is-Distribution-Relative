@@ -40,8 +40,7 @@ def reject_private_dependencies(path):
 
 
 def compare_shared_science(arxiv, iclr):
-    shared_roots = ("sections", "appendices")
-    for root in shared_roots:
+    for root in ("sections", "appendices"):
         aroot = arxiv / root
         iroot = iclr / root
         afiles = files_under(aroot)
@@ -52,7 +51,7 @@ def compare_shared_science(arxiv, iclr):
             if (aroot / rel).read_bytes() != (iroot / rel).read_bytes():
                 raise SystemExit(f"shared scientific source drift: {root}/{rel}")
     if (arxiv / "references.bib").read_bytes() != (iclr / "references.bib").read_bytes():
-        raise SystemExit("bibliography drift between arXiv and ICLR packages")
+        raise SystemExit("bibliography drift between identified and anonymous packages")
 
 
 def compile_extracted_zip(archive):
@@ -83,6 +82,8 @@ def main():
     required = [
         arxiv / "main.tex",
         arxiv / "references.bib",
+        arxiv / "iclr2027_conference.sty",
+        arxiv / "iclr2027_conference.bst",
         iclr / "main.tex",
         iclr / "references.bib",
         iclr / "iclr2027_conference.sty",
@@ -104,7 +105,7 @@ def main():
     if "Luis F. Rosario Freytes" in iclr_main:
         raise SystemExit("author identity leaked into ICLR main source")
     if "Luis F. Rosario Freytes" not in arxiv_main:
-        raise SystemExit("arXiv package is not identified")
+        raise SystemExit("identified preprint is missing the author")
 
     compare_shared_science(arxiv, iclr)
     check_zip(arxiv, zips / "mldr_arxiv.zip")
