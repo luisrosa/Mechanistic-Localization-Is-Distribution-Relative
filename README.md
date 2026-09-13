@@ -15,71 +15,71 @@ No.
 
 Take
 
-```math
+$$
 X=\{0,1\}^2,\qquad \Phi(x_1,x_2)=x_1,\qquad Q_2(x_1,x_2)=x_2.
-```
+$$
 
-Put most probability mass on the diagonal states `00,11`. Through the receiver `Q_2`, the Bayes-optimal rule is
+Put most probability mass on the diagonal states `00,11`. Through the receiver $Q_2$, the Bayes-optimal rule is
 
-```math
+$$
 h_\mu(z)=z.
-```
+$$
 
-Now reverse the diagonal and off-diagonal weights while keeping the support equal to all of `X`. The optimal rule through the **same receiver in the same network** becomes
+Now reverse the diagonal and off-diagonal weights while keeping the support equal to all of $X$. The optimal rule through the **same receiver in the same network** becomes
 
-```math
+$$
 h_\nu(z)=1-z.
-```
+$$
 
 Nothing structural changed. Only the realized probability law changed.
 
 That is the central point of the paper: a component set does not by itself determine the rule realized through the state it exposes. The localization problem has to distinguish
 
-```math
+$$
 K\longrightarrow (K,h)\longrightarrow [hQ_K]_\mu,
-```
+$$
 
-where `K` says where we read, `(K,h)` says how the exposed state is used, and `[hQ_K]_\mu` is the action actually induced on the realized population.
+where $K$ says where we read, $(K,h)$ says how the exposed state is used, and $[hQ_K]_\mu$ is the action actually induced on the realized population.
 
 ## Two different questions appear
 
 Once those objects are separated, two things that look similar at first behave very differently.
 
-For **predictive adequacy**, more passive receiver access can only help. If `K ⊆ K'`, the larger receiver can always ignore its extra coordinates, so
+For **predictive adequacy**, more passive receiver access can only help. If $K\subseteq K'$, the larger receiver can always ignore its extra coordinates, so
 
-```math
+$$
 \delta_\mu(K')\le \delta_\mu(K).
-```
+$$
 
 For **context invariance**, there is no corresponding monotonicity law. Under log loss, the value of revealing context is
 
-```math
+$$
 \Gamma_K^{\log}=I(Y_\Phi;C\mid Q_K(X)),
-```
+$$
 
 and adding one receiver changes it by
 
-```math
+$$
 I(Y_\Phi;Q_j\mid Q_K,C)-I(Y_\Phi;Q_j\mid Q_K).
-```
+$$
 
 That quantity can be positive or negative. More internal information can make one rule easier to reuse across contexts or harder to reuse.
 
-So "this receiver predicts the phenomenon" and "this receiver supports the same mechanism across distributions" are different claims.
+So “this receiver predicts the phenomenon” and “this receiver supports the same mechanism across distributions” are different claims.
 
 ## Why support still shows up
 
 The earlier support-relative picture is not thrown away. It appears as the exact, zero-loss shadow of the richer distribution-relative problem.
 
-In finite `0–1` settings,
+In finite $0$–$1$ settings,
 
-```math
+$$
 \delta_\mu(K)=0
 \iff
 \Phi|_S\text{ factors through }Q_K|_S
 \iff
 \mathrm{Eq}(Q_K|_S)\subseteq\mathrm{Eq}(\Phi|_S).
-```
+$$
 
 At zero loss, probability weights disappear and the problem collapses to which target-relevant distinctions survive on the support. That is where the functional-dependency and hitting-set structure comes from.
 
