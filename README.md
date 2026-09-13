@@ -107,7 +107,7 @@ To run the finite checks:
 make check
 ```
 
-The anonymous ICLR 2027 source package is preserved in [`iclr2027/`](iclr2027/), with the corresponding upload archive in [`submission-zips/mldr_iclr2027.zip`](submission-zips/mldr_iclr2027.zip).
+The anonymous ICLR 2027 upload package is preserved as [`submission-zips/mldr_iclr2027.zip`](submission-zips/mldr_iclr2027.zip). The current ICLR wrapper and shared scientific source remain in [`source/`](source/).
 
 ## Citation
 
