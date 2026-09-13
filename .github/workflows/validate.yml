@@ -1,4 +1,4 @@
-name: Validate public research artifact
+name: Build and check paper
 
 on:
   push:
@@ -6,34 +6,30 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install build dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra lmodern zip unzip poppler-utils
-      - name: Run finite regressions
+          sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra zip unzip poppler-utils
+      - name: Run finite checks
         run: make check
-      - name: Build standalone packages
-        run: make packages
-      - name: Compile ICLR package
-        run: make iclr
-      - name: Compile arXiv package
-        run: make arxiv
+      - name: Build identified and anonymous manuscripts
+        run: make submission
       - name: Reject unresolved references and citations
         run: |
-          for log in iclr2027/main.log arxiv/main.log; do
+          for log in arxiv/main.log iclr2027/main.log; do
             if grep -E "LaTeX Warning: (Reference|Citation).*undefined|There were undefined references|There were undefined citations" "$log"; then
               echo "Unresolved references or citations in $log"
               exit 1
             fi
           done
-      - name: Enforce ICLR main-text page gate
+      - name: Enforce ICLR main-text page limit
         run: |
           python3 - <<'PY'
           import re
@@ -43,15 +39,13 @@ jobs:
           if not m:
               raise SystemExit('Could not resolve sec:main-text-end page label')
           page = int(m.group(1))
-          print(f'ICLR counted main text ends on page {page}')
+          print(f'ICLR main text ends on page {page}')
           if page > 9:
               raise SystemExit('ICLR main text exceeds 9 pages')
           PY
-      - name: Verify standalone package manifests
-        run: make verify
-      - name: Build root identified PDF
-        run: make pdf
+      - name: Build public PDF
+        run: make paper
       - name: PDF preflight
         run: |
-          pdfinfo mechanistic_localization_is_distribution_relative.pdf >/dev/null
+          pdfinfo paper.pdf >/dev/null
           pdfinfo iclr2027/main.pdf >/dev/null
