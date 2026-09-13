@@ -78,7 +78,7 @@ In finite `0–1` settings,
 \iff
 \Phi|_S\text{ factors through }Q_K|_S
 \iff
-\operatorname{Eq}(Q_K|_S)\subseteq\operatorname{Eq}(\Phi|_S).
+\mathrm{Eq}(Q_K|_S)\subseteq\mathrm{Eq}(\Phi|_S).
 ```
 
 At zero loss, probability weights disappear and the problem collapses to which target-relevant distinctions survive on the support. That is where the functional-dependency and hitting-set structure comes from.
