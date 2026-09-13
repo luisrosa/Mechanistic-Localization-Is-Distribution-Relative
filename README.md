@@ -95,6 +95,8 @@ So even at the exact support level, fixing the architecture does not select one 
 
 The maintained manuscript is in [`source/`](source/). The small finite checks used while developing the examples are in [`scripts/check_examples.py`](scripts/check_examples.py).
 
+The standalone identified preprint package is tracked in [`arxiv/`](arxiv/), and the anonymous ICLR 2027 package is tracked in [`iclr2027/`](iclr2027/). The exact anonymous upload ZIP is preserved at [`submission-zips/mldr_iclr2027.zip`](submission-zips/mldr_iclr2027.zip). The package script can regenerate both submission ZIPs from the maintained scientific source.
+
 To build the identified paper:
 
 ```bash
@@ -106,8 +108,6 @@ To run the finite checks:
 ```bash
 make check
 ```
-
-The anonymous conference wrapper and submission package can also be generated from the same scientific source, but they are build products rather than the public face of the repository.
 
 ## Citation
 

@@ -9,6 +9,3 @@
 *.synctex.gz
 .build/
 __pycache__/
-arxiv/
-iclr2027/
-submission-zips/

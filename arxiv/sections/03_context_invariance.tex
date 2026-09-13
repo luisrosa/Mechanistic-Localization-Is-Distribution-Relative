@@ -1,0 +1,113 @@
+\section{Context-invariant realization}
+\label{sec:contextuality}
+
+Predictive sufficiency and context-invariant realization are different properties. Receiver refinement monotonically improves the first. It need not improve the second. Continue with the maximal receiver decoder class from \cref{sec:realized-access-presentations}; fix $X$, the receiver family, $\Phi$, the action space $\mathsf A$, and the loss $\ell$, and vary only the probability law.
+
+Let $C$ label experimental contexts---such as input populations, domains, prompt families, or other distributional conditions---with $\Pr(C=c)=\lambda_c>0$ and $X\mid C=c\sim\mu_c$. Write
+\[
+\bar\mu=\sum_c\lambda_c\mu_c.
+\]
+When $C$ is observed, each context may use its own optimal rule through $Q_K$. When $C$ is hidden, one rule must act on the pooled law. We measure the cost of requiring one receiver-level decoder to serve all contexts by
+\begin{equation}
+\Gamma_K
+:=
+\delta_{\bar\mu}(K)-\sum_c\lambda_c\delta_{\mu_c}(K)
+\ge0.
+\label{eq:context-value}
+\end{equation}
+It is the excess Bayes risk incurred when the context label is hidden.
+
+\begin{proposition}[Context invariance is a common-optimum condition]
+\label{thm:shared-decoder-criterion}
+Assume the context and pooled minima are attained. Then
+\[
+\Gamma_K=0
+\quad\Longleftrightarrow\quad
+\bigcap_c\Opt_{\mu_c}(K)\neq\varnothing,
+\]
+where $\Opt_{\mu_c}(K)$ is the set of risk-minimizing rules through $Q_K$.
+\end{proposition}
+\begin{proof}
+A rule optimal in every context attains equality in \cref{eq:context-value}. Conversely, if equality holds and $h^*$ minimizes pooled risk, then
+\[
+\sum_c\lambda_c R_{\mu_c}(K,h^*)
+=
+\sum_c\lambda_c\delta_{\mu_c}(K).
+\]
+Every term on the left is at least the corresponding optimum, and every $\lambda_c$ is positive. Hence $h^*$ is optimal in every context.
+\end{proof}
+
+Nothing in this argument depends on maximality of the decoder class. For any fixed architecture-specific family $\mathscr H_K$, replacing $\delta_\mu$ by $\delta_{\mu,\mathscr H}$ gives the same common-optimum criterion with optimizers taken inside $\mathscr H_K$. The criterion therefore isolates the internal invariance question at either level: once the receiver map and admissible downstream class are fixed, does one decoder remain optimal across realized states? This differs from invariant prediction and invariant risk minimization, which impose related common-predictor conditions in different problem settings \citep{arjovsky2019irm,ruan2022covariate}.
+
+Log loss makes the maximal receiver-sufficiency penalty exact. Assume $Y_\Phi$ and $C$ are finite, take $\mathsf A=\Prob(Y)$, and use
+\[
+\ell_{\log}(y,r)=-\log r(y).
+\]
+Because the maximal class contains the Bayes action, the optimal rule is the conditional law of $Y_\Phi$, so the pooled and context-aware risks are conditional entropies. Since log loss is unbounded, the bounded-loss TV statement from \cref{sec:realized-access-presentations} is not invoked here.
+
+\begin{theorem}[Context value and receiver increment under log loss]
+\label{thm:contextuality-cmi}
+\label{thm:contextuality-receiver-increment}
+Assume the displayed conditional entropies and mutual informations are finite. Then
+\begin{equation}
+\Gamma_K^{\log}
+=
+I(Y_\Phi;C\mid Q_K(X)).
+\label{eq:context-cmi}
+\end{equation}
+For $j\notin K$, writing $Z=Q_K(X)$ and $W=Q_j(X)$,
+\begin{equation}
+\boxed{
+\Gamma_{K\cup\{j\}}^{\log}-\Gamma_K^{\log}
+=
+I(Y_\Phi;W\mid Z,C)
+-
+I(Y_\Phi;W\mid Z).
+}
+\label{eq:receiver-increment}
+\end{equation}
+The increment can be positive or negative.
+\end{theorem}
+\begin{proof}
+For log loss,
+\[
+\delta_{\bar\mu}^{\log}(K)=H(Y_\Phi\mid Z),
+\qquad
+\sum_c\lambda_c\delta_{\mu_c}^{\log}(K)=H(Y_\Phi\mid Z,C),
+\]
+which gives \cref{eq:context-cmi}. Also,
+\[
+\Gamma_{K\cup\{j\}}^{\log}-\Gamma_K^{\log}
+=
+I(Y_\Phi;C\mid Z,W)-I(Y_\Phi;C\mid Z).
+\]
+Expanding $I(Y_\Phi;C,W\mid Z)$ in the two chain-rule orders gives \cref{eq:receiver-increment}.
+\end{proof}
+
+Equation~\eqref{eq:context-cmi} gives a direct interpretation: $\Gamma_K^{\log}$ is exactly the target-relevant information carried by context that remains after the receiver representation is known. Equation~\eqref{eq:receiver-increment} then rules out any general monotonicity of context invariance under receiver refinement. More internal information can make a common rule easier to sustain or harder to sustain across distributions.
+
+Both failures occur in elementary binary systems. For an increase, let $C$ and $Y_\Phi$ be independent fair bits, let $N\sim\mathrm{Bernoulli}(p)$ be independent with $0<p<1/2$, and set
+\[
+Q_1=Y_\Phi\oplus N,\qquad Q_2=Y_\Phi\oplus C.
+\]
+With $K=\{1\}$, $C$ is independent of $(Y_\Phi,Q_1)$, so $\Gamma_{\{1\}}^{\log}=0$. Marginally, $Q_2$ is also independent of $(Y_\Phi,Q_1)$; pooled predictive risk does not improve. After conditioning on $Q_2$, however, $C=Y_\Phi\oplus Q_2$, and
+\[
+\Gamma_{\{1,2\}}^{\log}
+=I(Y_\Phi;C\mid Q_1,Q_2)
+=H_2(p)>0.
+\]
+The added receiver has made the optimal decoder context-dependent.
+
+For a decrease, let $C=Y_\Phi$ be nondegenerate, begin from a constant receiver, and add $Q_j=Y_\Phi$. Then
+\[
+\Gamma_\varnothing^{\log}=I(Y_\Phi;C)=H(Y_\Phi)>0,
+\qquad
+\Gamma_{\{j\}}^{\log}=I(Y_\Phi;C\mid Y_\Phi)=0.
+\]
+Here the added receiver removes the common-rule penalty completely.
+
+The opening two-bit construction gives the same separation under $0$--$1$ loss. The context-specific rules are $z$ and $1-z$, their equal mixture has error $1/2$, and
+\[
+\Gamma_{\{2\}}=\frac12-\eta>0
+\]
+even though the two context laws have identical support. Exact support localization therefore cannot see the distinction. The next section identifies precisely what remains after the probability weights are discarded.

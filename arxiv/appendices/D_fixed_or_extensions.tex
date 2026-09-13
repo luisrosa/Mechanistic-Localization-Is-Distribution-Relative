@@ -1,0 +1,69 @@
+\section{Further fixed-network universality consequences}
+\label{app:fixed-or-extensions}
+
+This appendix records consequences of the fixed-OR support-universality theorem that are stronger than needed for the main narrative.
+
+For a support $S$ of the fixed OR network, define its \emph{exact localization order} by
+\begin{equation}
+\lambda_\Phi(S)
+:=
+\min\{|K|:K\in\Rcal_\Phi(S)\}.
+\label{eq:app-exact-localization-order}
+\end{equation}
+The family $\Rcal_\Phi(S)$ is nonempty because the full coordinate set $J$ always determines the OR output on $S$.
+
+\begin{corollary}[Arbitrary monotone localization-order profile]
+\label{cor:app-arbitrary-order-profile-shadow}
+Let $P$ be finite and let
+\[
+d:P\to\{0,\ldots,|J|\}
+\]
+satisfy
+\[
+p\le q\Longrightarrow d(p)\le d(q).
+\]
+Then the fixed network
+\[
+\NN_J:
+\{0,1\}^J
+\xrightarrow{\Id}
+\{0,1\}^J
+\xrightarrow{\mathrm{OR}}
+\{0,1\}
+\]
+admits supports $S_p$ such that
+\begin{equation}
+p\le q
+\Longrightarrow
+S_p\subseteq S_q,
+\qquad
+\lambda_\Phi(S_p)=d(p).
+\label{eq:app-monotone-support-profile}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set
+\[
+F_p:=\{K\subseteq J:|K|\ge d(p)\}
+\]
+and
+\[
+S_p:=\sigma_{\mathrm{OR}}(F_p).
+\]
+Each $F_p$ is nonempty and upward closed. If $p\le q$, then $d(p)\le d(q)$ and hence
+\[
+F_q\subseteq F_p.
+\]
+Every hitting set of $F_p$ therefore hits $F_q$, so
+\[
+\Hit(F_p)\subseteq\Hit(F_q).
+\]
+By the definition of $\sigma_{\mathrm{OR}}$, this gives
+\[
+S_p\subseteq S_q.
+\]
+Theorem~\ref{thm:fixed-or-support-universality} gives $\Rcal_\Phi(S_p)=F_p$, whose smallest members have cardinality exactly $d(p)$. Thus $\lambda_\Phi(S_p)=d(p)$.
+\end{proof}
+
+The result shows that the fixed OR network can realize not only arbitrary admissible localization families at one support, but arbitrary finite monotone profiles of minimum exact receiver-set size along nested support diagrams. The main text omits this strengthening so that the fixed-OR theorem itself remains the final major theorem and its direct mechanistic consequence is visually dominant.

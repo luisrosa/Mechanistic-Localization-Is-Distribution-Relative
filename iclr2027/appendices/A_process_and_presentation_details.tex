@@ -1,0 +1,229 @@
+\section{Formal details for realized processes and receiver presentations}
+\label{app:process-presentation-details}
+
+This appendix records formal properties used by the main-text typing of realized neural processes and receiver-level mechanism presentations. It also formalizes architecture-specific decoder classes as restrictions of the maximal receiver-level decoder functor: the main text's decoder hypothesis classes appear here as subfunctors. The main text keeps the constructions that drive the argument; categorical and almost-sure bookkeeping is collected here.
+
+\subsection{State transport and the realized neural process}
+
+Let $\SBor$ denote the category of standard Borel spaces and measurable deterministic maps. For a measurable map $f:X\to Y$, pushforward defines
+\[
+f_*:\Prob(X)\to\Prob(Y),
+\qquad
+(f_*\mu)(B)=\mu(f^{-1}(B)).
+\]
+Thus
+\begin{equation}
+\Prob:\SBor\longrightarrow\Set
+\label{eq:app-probability-functor}
+\end{equation}
+is a covariant functor.
+
+Fix represented cuts
+\[
+[L]=\{0<1<\cdots<L\}
+\]
+regarded as a category, and let
+\[
+X^\theta:[L]\to\SBor
+\]
+be a deterministic feed-forward neural process. Write
+\[
+F_{q\rightsquigarrow r}^\theta:=X^\theta(q\to r),
+\qquad
+A_q^\theta:=F_{0\rightsquigarrow q}^\theta.
+\]
+For a source state $\mu_0\in\Prob(X_0)$, set
+\[
+\mu_q:=(A_q^\theta)_*\mu_0.
+\]
+The category of elements $\int\Prob$ has objects $(X,\mu)$ and morphisms
+\[
+f:(X,\mu)\to(Y,\nu)
+\]
+with $f:X\to Y$ measurable and $f_*\mu=\nu$.
+
+\begin{proposition}[The realized neural process]
+\label{thm:app-state-decorated-process}
+For every deterministic neural process $X^\theta$ and source state $\mu_0$, the pushed-forward states define a unique lift
+\[
+\widetilde X^{\theta,\mu_0}:[L]\longrightarrow\int\Prob
+\]
+whose projection to $\SBor$ is $X^\theta$ and whose value at cut $q$ is $(X_q,\mu_q)$.
+\end{proposition}
+
+\begin{proof}
+For $q\le r$,
+\[
+(F_{q\rightsquigarrow r}^\theta)_*\mu_q
+=(F_{q\rightsquigarrow r}^\theta)_*(A_q^\theta)_*\mu_0
+=(A_r^\theta)_*\mu_0
+=\mu_r.
+\]
+Hence every network arrow is a morphism in $\int\Prob$. The source state determines every downstream state through the unique arrow $0\to q$, so the lift is unique.
+\end{proof}
+
+\begin{proposition}[Equivalent states remain equivalent downstream]
+\label{prop:app-measure-class-pushforward}
+Let $\mu$ and $\nu$ be probability measures on $X$ with the same null measurable sets. For every measurable deterministic map $f:X\to Y$,
+\[
+f_*\mu\sim f_*\nu.
+\]
+Consequently, if two source states lie in the same measure class, their induced states lie in the same measure class at every represented cut of a deterministic neural process.
+\end{proposition}
+
+\begin{proof}
+For every measurable $B\subseteq Y$,
+\[
+(f_*\mu)(B)=0
+\Longleftrightarrow
+\mu(f^{-1}(B))=0
+\Longleftrightarrow
+\nu(f^{-1}(B))=0
+\Longleftrightarrow
+(f_*\nu)(B)=0.
+\]
+Apply the result to each prefix map $A_q^\theta$.
+\end{proof}
+
+\subsection{Receiver refinement as a presentation category}
+
+Fix a finite declared receiver family $J$ at one represented cut, with measurable maps
+\[
+Q_j:X\to Z_j.
+\]
+Write
+\[
+\Bool_J:=(2^J,\subseteq)
+\]
+for the Boolean receiver poset regarded as a category. For $K\subseteq J$, let
+\[
+Z_K:=\prod_{j\in K}Z_j,
+\qquad
+Q_K:=\langle Q_j\rangle_{j\in K},
+\]
+and for $K\subseteq K'$ let
+\[
+p_{K'K}:Z_{K'}\to Z_K
+\]
+be coordinate projection. Fix a standard Borel action space $\mathsf A$ and define
+\[
+\Dec_{\mathsf A}(K)
+:=\{h:Z_K\to\mathsf A\mid h\text{ measurable}\}.
+\]
+Receiver refinement pulls a rule on $K$ back to one on $K'$,
+\begin{equation}
+\Dec_{\mathsf A}(K)\longrightarrow\Dec_{\mathsf A}(K'),
+\qquad
+h\longmapsto h\circ p_{K'K}.
+\label{eq:app-decoder-refinement-map}
+\end{equation}
+These maps are functorial, so
+\[
+\Dec_{\mathsf A}:\Bool_J\to\Set
+\]
+is a functor. Its category of elements $\int\Dec_{\mathsf A}$ has objects $(K,h)$ with $K\subseteq J$ and $h:Z_K\to\mathsf A$.
+
+A refinement arrow preserves the induced action pointwise. If $K\subseteq K'$ and $h'=h\circ p_{K'K}$, then
+\begin{equation}
+h'Q_{K'}=hQ_K.
+\label{eq:app-refinement-preserves-action}
+\end{equation}
+
+\subsection{Architecture-specific decoder subfunctors}
+
+The maximal decoder functor separates receiver access from any particular downstream implementation. Categorically, refinement-compatible decoder hypothesis classes are exactly subfunctors of the maximal decoder functor,
+\[
+\mathscr H\hookrightarrow\Dec_{\mathsf A}.
+\]
+Concretely, this consists of subsets
+\[
+\mathscr H_K\subseteq\Dec_{\mathsf A}(K)
+\]
+for each $K\subseteq J$ such that
+\begin{equation}
+h\in\mathscr H_K
+\quad\Longrightarrow\quad
+h\circ p_{K'K}\in\mathscr H_{K'}
+\qquad(K\subseteq K').
+\label{eq:app-architecture-refinement-closure}
+\end{equation}
+This is exactly the closure needed for passive receiver refinement to preserve the admissible downstream class.
+
+For a probability state $\mu$ and measurable loss $\ell:Y\times\mathsf A\to[0,\infty]$, define
+\[
+\delta_{\mu,\mathscr H}(K)
+:=
+\inf_{h\in\mathscr H_K}
+\mathbb E_\mu\!\left[\ell\bigl(\Phi(X),h(Q_K(X))\bigr)\right].
+\]
+
+\begin{proposition}[Refinement monotonicity for decoder subfunctors]
+\label{prop:app-architecture-refinement-monotonicity}
+If $\mathscr H\hookrightarrow\Dec_{\mathsf A}$ is a refinement-compatible decoder subfunctor and $K\subseteq K'$, then
+\[
+\delta_{\mu,\mathscr H}(K')\le\delta_{\mu,\mathscr H}(K).
+\]
+\end{proposition}
+
+\begin{proof}
+For $h\in\mathscr H_K$, closure \eqref{eq:app-architecture-refinement-closure} gives $h':=h\circ p_{K'K}\in\mathscr H_{K'}$. Equation~\eqref{eq:app-refinement-preserves-action} gives $h'Q_{K'}=hQ_K$ pointwise, so the two rules have the same risk. Taking the infimum over $h\in\mathscr H_K$ gives the claim.
+\end{proof}
+
+The maximal case is $\mathscr H=\Dec_{\mathsf A}$. Smaller subfunctors specialize the receiver-sufficiency problem to restricted downstream computation classes without changing the access maps themselves. A family that is not closed under \eqref{eq:app-architecture-refinement-closure} need not inherit the refinement monotonicity law.
+
+In the finite exact setting, define
+\[
+\Rcal^{\mathscr H}_\Phi(S)
+:=
+\{K\subseteq J:\exists h\in\mathscr H_K\text{ with }\Phi|_S=hQ_K|_S\}.
+\]
+Then
+\begin{equation}
+\Rcal^{\mathscr H}_\Phi(S)\subseteq\Rcal_\Phi(S).
+\label{eq:app-restricted-exact-subfamily}
+\end{equation}
+Hence failure of the maximal factorization condition is an access obstruction shared by every downstream architecture using only $Q_K(X)$, while membership in $\Rcal_\Phi(S)$ need not imply membership in $\Rcal^{\mathscr H}_\Phi(S)$ for a restricted architecture class.
+
+\subsection{State-relative presentation equivalence}
+
+For a probability state $\mu$ on $X$, define
+\[
+(K,h)\equiv_\mu(K',h')
+\quad\Longleftrightarrow\quad
+hQ_K=h'Q_{K'}
+\qquad\mu\text{-almost surely}.
+\]
+
+\begin{proposition}[State-relative presentation equivalence]
+\label{prop:app-state-relative-presentation-equivalence}
+For every probability state $\mu$, the relation $\equiv_\mu$ is an equivalence relation on receiver-level presentations with common action space $\mathsf A$. Moreover:
+\begin{enumerate}[label=(\roman*)]
+\item every refinement arrow in $\int\Dec_{\mathsf A}$ relates equivalent presentations pointwise and therefore under every state;
+\item if $\mu\sim\nu$ have the same null sets, then $\equiv_\mu$ and $\equiv_\nu$ coincide;
+\item if $\bar\mu=\sum_{c=1}^m\lambda_c\mu_c$ with every $\lambda_c>0$, then
+\[
+(K,h)\equiv_{\bar\mu}(K',h')
+\quad\Longleftrightarrow\quad
+(K,h)\equiv_{\mu_c}(K',h')
+\text{ for every }c.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Reflexivity, symmetry, and transitivity are inherited from almost-sure equality of measurable maps. Part (i) follows from \eqref{eq:app-refinement-preserves-action}. For part (ii), the disagreement set
+\[
+B:=\{x:h(Q_K(x))\neq h'(Q_{K'}(x))\}
+\]
+is measurable and is $\mu$-null if and only if it is $\nu$-null. For part (iii),
+\[
+\bar\mu(B)=\sum_{c=1}^m\lambda_c\mu_c(B).
+\]
+With all coefficients strictly positive, this vanishes exactly when every $\mu_c(B)$ vanishes.
+\end{proof}
+
+These properties justify the main text's hierarchy
+\[
+K\longrightarrow(K,h)\longrightarrow[hQ_K]_\mu
+\]
+and make architecture-specific specialization explicit without requiring the categorical details to interrupt the main argument.

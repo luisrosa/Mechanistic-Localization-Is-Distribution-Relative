@@ -1,0 +1,60 @@
+\section{Introduction}
+\label{sec:introduction}
+
+A circuit-localization claim names a subset of internal components and asks whether the exposed state through those components suffices for a phenomenon. Decision-theoretic representation theory asks whether an exposed representation is Bayes-sufficient for a specified distribution and loss \citep{sevetlidis2026bayes}. That fixes the probability law while asking what the representation makes available. Mechanistic localization then asks what survives when the network, receiver, phenomenon, loss, and literal support stay fixed while the realized probability law changes.
+
+Even the smallest finite example shows that the receiver-level rule need not survive. Let
+\[
+X=\{0,1\}^2,\qquad
+\Phi(x_1,x_2)=x_1,\qquad
+Q_2(x_1,x_2)=x_2.
+\]
+For $0<\eta<1/2$, let $\mu_\eta$ put mass $(1-\eta)/2$ on each diagonal point $00,11$ and mass $\eta/2$ on each off-diagonal point. Let $\nu_\eta$ reverse those weights. The represented state space, receiver, phenomenon, and literal support are unchanged:
+\[
+\supp\mu_\eta=\supp\nu_\eta=X.
+\]
+Under $0$--$1$ loss, however, the optimal rule through the same receiver reverses,
+\[
+h_{\mu_\eta}(z)=z,\qquad h_{\nu_\eta}(z)=1-z,
+\]
+and has error $\eta$ in either state. Their equal mixture is uniform; there $Q_2$ carries no predictive information about $\Phi$ and the minimum error is $1/2$. Passing from the probability law to its support erases exactly the information that selects the receiver-level rule. Thus neither a component set nor a support-relative circuit determines the receiver-level realization selected by the probability distribution. We therefore treat that distribution as part of the realized computational state.
+
+Recent results often grouped under ``circuit variability'' vary different objects. Circuit structure changes under input variation, resampling, and prompt rephrasing, while transfer and interchange tests can make some structural differences functionally weak \citep{bayat2026many,wu2026variance}. A behavior can admit several sparse or otherwise admissible circuit descriptions \citep{chen2026allcircuits,meloux2025identifiable}; formal verification can separately certify robustness or minimality for a declared candidate \citep{hadad2026formal}. Mediator choice changes the exposed internal state, and interventions can move that state away from the natural distribution without changing learned parameters \citep{mueller2026mediator,grant2026divergent}. These are not one kind of instability: they change different arguments of the mechanistic claim.
+
+Existing formalisms already expose some of these arguments. Causal abstraction fixes maps between computational systems; verification-based discovery certifies a declared circuit on an explicit domain; MIB fixes benchmark tracks and evaluation targets for circuit and causal-variable localization \citep{geiger2025causal,hadad2026formal,mueller2025mib}. Here we hold the ambient network, receiver access, phenomenon, admissible receiver-to-action class, and decision criterion fixed and vary the realized probability state. This isolates a precise question: which parts of a localization claim survive a change in the law governing the realized states?
+
+A deterministic network supplies an ambient process $X^\theta$. A source law $\mu_0$ induces a state-decorated process $\widetilde X^{\theta,\mu_0}$. At a represented cut, the analysis declares receiver maps $Q_j$ and a phenomenon $\Phi$. Operationally, $Q_K(X)$ is the internal representation made available to the analysis, while a decoder $h$ specifies how that representation is used to predict or realize the target phenomenon. The exposed state and its admissible downstream use are separate choices. For receiver set $K$, let $\Dec_{\mathsf A}(K)$ be the measurable maps from $Z_K$ to an action space $\mathsf A$, and let $\mathscr H_K\subseteq\Dec_{\mathsf A}(K)$ denote the admissible decoder hypothesis class induced by a declared downstream architecture or continuation protocol. The maximal choice $\mathscr H_K=\Dec_{\mathsf A}(K)$ isolates what is realizable from the receiver state before any further downstream architectural restriction. The main theory works at this maximal receiver-sufficiency level; architecture-specific localization is obtained by restricting $\mathscr H$.
+
+For $h\in\mathscr H_K$, the resulting hierarchy is
+\begin{equation}
+\boxed{
+K\longrightarrow (K,h)\longrightarrow [hQ_K]_\mu .
+}
+\label{eq:intro-hierarchy}
+\end{equation}
+In ordinary terms, these are the selected internal variables, those variables together with a decoder, and the predictor that this decoder induces on the realized distribution. Location is not presentation, and presentation is not realized action. The first object records where the analysis reads; the second records one admissible rule applied to that state; the third records the induced action on the realized population up to almost-sure equality. The opening example holds $K$ fixed while changing the optimal presentation and realized action. A component set is therefore not a complete localization specification.
+
+This distinction yields two different laws. Inside one fixed passive access family,
+\[
+K\subseteq K'
+\quad\Longrightarrow\quad
+\delta_\mu(K')\le\delta_\mu(K):
+\]
+more exposed receiver state cannot worsen optimal prediction. Context-invariant realization obeys no corresponding monotonicity law. If $C$ labels contexts, then under log loss
+\[
+\Gamma_K^{\log}=I(Y_\Phi;C\mid Q_K(X)),
+\]
+and adding receiver $j$ changes this quantity by
+\begin{equation}
+\boxed{
+\Gamma_{K\cup\{j\}}^{\log}-\Gamma_K^{\log}
+=
+I(Y_\Phi;Q_j\mid Q_K,C)
+-
+I(Y_\Phi;Q_j\mid Q_K).
+}
+\label{eq:intro-increment}
+\end{equation}
+Either sign occurs. Receiver refinement therefore orders predictive adequacy but does not order context invariance: more internal information can make a common rule easier or harder to sustain across distributions.
+
+Exact localization is a strictly coarser problem. Almost-sure exact realization depends only on measure class; in finite $0$--$1$ problems, zero risk depends only on support and becomes support-level factorization, functional dependency, and decision-reduct structure. This coarse-graining destroys probability-weight information by construction. It also destroys any hope that architecture alone selects a canonical exact circuit at the receiver-sufficiency level. We prove that one fixed Boolean OR network, with fixed coordinate receivers and a fixed Boolean target, realizes every nonempty upward-closed exact localization family by varying support alone. The paper therefore establishes both sides of the distribution-relative picture: quantitative receiver adequacy has a monotone refinement law, while context invariance and exact circuit identity remain distribution-relative. The appendices carry the architecture-specialization result, longer finite geometry, categorical details, and exact descent constructions.

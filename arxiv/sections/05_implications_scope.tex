@@ -1,0 +1,46 @@
+\section{Implications for mechanistic localization}
+\label{sec:discussion}
+
+A component set is not a complete mechanism specification at the receiver-sufficiency level. A localization claim fixes the realized probability state $\mu$, receiver or mediator map $Q$, phenomenon $\Phi$, admissible decoder class $\mathscr H$, and decision criterion $\ell$; a selection threshold $\varepsilon$ and concrete rule $h$ also belong to the claim when used. Empirically, these are the input or prompt distribution, mediator or representation being read, downstream architecture class, target behavior, adequacy criterion, selection threshold, and concrete receiver-level rule. Different experimental choices therefore act on different arguments of the problem:
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}p{0.27\linewidth}p{0.19\linewidth}p{0.45\linewidth}@{}}
+\toprule
+\textbf{What changes} & \textbf{Argument} & \textbf{What can change} \\
+\midrule
+input population or prompt distribution & $\mu$ & optimal rule, receiver risk, context value, selected circuit \\
+mediator or representation granularity & $Q$ & the localization problem itself \\
+downstream architecture or continuation class & decoder class $\mathscr H$ & realizable receiver-level rules, optimal risk, selected localization \\
+target behavior & $\Phi$ & which distinctions receivers must preserve \\
+loss or adequacy criterion & $\ell$ & optimal action and receiver risk \\
+selection threshold & $\varepsilon$ & the discrete reported circuit family \\
+passive receiver set & $K$ & predictive risk, monotonically under refinement \\
+intervention protocol & realized process/state & the induced experiment; passive Blackwell order need not apply \\
+\bottomrule
+\end{tabular}
+\caption{Different experimental changes act on different arguments of a mechanistic-localization claim.}
+\label{tab:localization-arguments}
+\end{table}
+
+Different reported component subsets do not by themselves establish different realized mechanisms: studies may differ in $\mu$, $Q$, $\mathscr H$, $\Phi$, $\ell$, $\varepsilon$, or the induced process. Conversely, the same subset does not establish the same receiver-level realization, because the optimal rule and induced action can vary with $\mu$. The hierarchy $K\to(K,h)\to[hQ_K]_\mu$ makes both failures explicit.
+
+The Blackwell order applies when
+\[
+Q_K=p_{K'K}Q_{K'}
+\]
+on the same realized state. Ablation, patching, retention, or rerun protocols can instead change the state entering downstream computation, so structural inclusion alone does not define a Blackwell refinement; comparison then requires a garbling or simulation relation between the induced experiments.
+
+The maximal decoder class is the downstream-implementation-independent outer layer of receiver sufficiency. It separates two obstructions. An \emph{access obstruction}, $\delta_\mu(K)>0$, means no measurable downstream rule receiving only $Q_K(X)$ can attain zero risk: the required distinction is already lost at the receiver interface. A \emph{decoder-class obstruction}, $\delta_\mu(K)=0$ but $\delta_{\mu,\mathscr H}(K)>0$, means the distinction reaches the receiver but the selected architecture cannot realize the required map. These are different mechanistic failures and should not be collapsed into one notion of ``circuit insufficiency.''
+
+Causal necessity and intervention-defined mechanisms add another axis. Restricting $\mathscr H$ changes which functions may act on a fixed representation; patching or ablation can change the representation distribution itself. Causal abstraction and formal patching supply comparison structure for that problem \citep{geiger2025causal,hadad2026formal}; cross-network work fixes still another comparison problem \citep{sun2026equivalent}. Receiver granularity, downstream use class, and induced process are therefore separate declared parts of the analysis.
+
+At zero loss, context invariance becomes a literal local-to-global compatibility problem. If contexts $S_i$ each admit an exact decoder through one fixed $Q_K$, a decoder on $\bigcup_i S_i$ exists exactly when the local decoders agree on every receiver-image overlap
+\[
+Q_K(S_i)\cap Q_K(S_j).
+\]
+These can exceed the images of $S_i\cap S_j$ because noninjective access can identify previously distinct states. Appendix~E gives the descent formulation. Thus $\Gamma_K$ and the exact global-section obstruction are two regimes of the same question: whether context-specific receiver rules extend to one rule.
+
+Architecture-level receiver formalisms constrain the represented process, exposed distinctions, and admissible downstream use before a probability state and adequacy criterion are chosen \citep{rosariofreytes2026architecture}. Here those interfaces are fixed and the realized state varies. The maximal decoder class isolates the dependence forced by state and access; restricting $\mathscr H$ specializes the same construction to a concrete downstream architecture. Mechanistic localization is therefore a statement about a realized computation under declared access and admissible use, not a property attached to a bare subset of model components.
+
+\label{sec:main-text-end}

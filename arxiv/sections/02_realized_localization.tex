@@ -1,0 +1,107 @@
+\section{Realized localization and predictive refinement}
+\label{sec:realized-access-presentations}
+\label{sec:stateful-processes}
+\label{sec:mechanism-presentations}
+
+Probability state is not metadata attached to a neural computation. It determines which receiver-level rule is optimal and therefore belongs in the realized localization problem. We include it in the process before defining receiver sufficiency.
+
+\paragraph{Realized process.}
+Let $\SBor$ be the category of standard Borel spaces and measurable deterministic maps, and let
+\[
+X^\theta:[L]\to\SBor,\qquad [L]=\{0<1<\cdots<L\},
+\]
+be a deterministic feed-forward neural process. Write $A_q^\theta:X_0\to X_q$ for the prefix to cut $q$. A source law $\mu_0\in\Prob(X_0)$ induces $\mu_q=(A_q^\theta)_*\mu_0$. Thus one input distribution induces a distribution over represented states at every cut of the same fixed network. The following lift packages the network maps and these transported distributions into a single realized process. The probability functor lifts the ambient network to
+\begin{equation}
+\widetilde X^{\theta,\mu_0}:[L]\to\int\Prob,\qquad
+q\mapsto(X_q,\mu_q),
+\label{eq:stateful-lift}
+\end{equation}
+where $f:(X,\mu)\to(Y,\nu)$ in $\int\Prob$ means that $f$ is measurable and $f_*\mu=\nu$. Functoriality of pushforward makes every network continuation state preserving in this lifted sense. Appendix~A gives the formal lift proposition and proof \citep{fritz2020synthetic}.
+
+Equation~\eqref{eq:stateful-lift} describes source-law variation through one fixed network. An internal intervention can instead supply a new boundary law at a represented cut; after that state is supplied, the same downstream construction applies to the rebased suffix. This paper studies the resulting realized process. Modeling the intervention operation that connects the natural and altered processes is a different comparison problem.
+
+\paragraph{Declared access and presentations.}
+Localization is relative to an access interface. Fix a represented cut---an internal layer or interface at which the analysis reads the computation---and suppress its index. A mechanistic protocol declares a finite receiver family of measurable maps
+\[
+Q_j:X\to Z_j,\qquad j\in J,
+\]
+into standard Borel receiver spaces. A receiver is any declared internal variable or readout used by the localization analysis; neurons, attention heads, sparse features, edges, and causal mediators instantiate different choices of $Q_j$ \citep{mueller2025mib,mueller2026mediator}. The protocol also declares a target phenomenon $\Phi:X\to Y$ into a standard Borel target space $Y$, representing the behavior or quantity to be localized. For $K\subseteq J$, set
+\[
+Z_K=\prod_{j\in K}Z_j,\qquad Q_K=\langle Q_j\rangle_{j\in K}.
+\]
+If $K\subseteq K'$, coordinate projection $p_{K'K}:Z_{K'}\to Z_K$ satisfies
+\begin{equation}
+Q_K=p_{K'K}Q_{K'}.
+\label{eq:receiver-garbling}
+\end{equation}
+These choices define different receiver interfaces rather than interchangeable descriptions of one fixed access map.
+
+Fix a standard Borel action space $\mathsf A$ and measurable loss $\ell:Y\times\mathsf A\to[0,\infty]$. Define the maximal receiver-level decoder class
+\[
+\Dec_{\mathsf A}(K):=\{h:Z_K\to\mathsf A\mid h\text{ measurable}\}.
+\]
+A concrete downstream architecture or continuation protocol can instead declare a restricted decoder hypothesis class $\mathscr H_K\subseteq\Dec_{\mathsf A}(K)$. These are distinct sources of limitation: $Q_K$ determines what information is available at the receiver interface, while $\mathscr H_K$ determines which functions of that information the downstream system can realize. The main theory takes $\mathscr H_K=\Dec_{\mathsf A}(K)$ to isolate receiver sufficiency itself. Architecture-specific localization is obtained by restricting $\mathscr H$.
+
+A receiver-level presentation is a receiver set together with one admissible decoder, $(K,h)$ with $h\in\mathscr H_K$. Two presentations are state-relative equivalent when
+\[
+(K,h)\equiv_\mu(K',h')
+\quad\Longleftrightarrow\quad
+hQ_K=h'Q_{K'}\quad\mu\text{-a.s.}
+\]
+Thus presentations are identified when they induce the same predictor on the realized population, even if they use different internal variables. This is the formal version of \cref{eq:intro-hierarchy}. Different locations can induce the same realized action: on $X=\{0,1\}$, the accesses $Q_1(x)=x$ and $Q_2(x)=1-x$ paired with $h_1(z)=z$ and $h_2(z)=1-z$ satisfy $h_1Q_1=h_2Q_2$ pointwise. The opening example gives the converse: one fixed location supports different optimal rules under different states. Location, presentation, and realized action are therefore distinct levels of mechanistic description. Appendix~A records the presentation category, architecture-specific decoder subfamilies, and measure-class properties.
+
+\paragraph{Receiver Bayes risk.}
+For a declared decoder family $\mathscr H$, define
+\begin{equation}
+\delta_{\mu,\mathscr H}(K)
+:=
+\inf_{h\in\mathscr H_K}
+\mathbb E_\mu\!\left[\ell\bigl(\Phi(X),h(Q_K(X))\bigr)\right].
+\label{eq:receiver-risk-general}
+\end{equation}
+The maximal receiver-sufficiency risk used throughout the main results is
+\begin{equation}
+\delta_\mu(K)
+:=
+\delta_{\mu,\Dec_{\mathsf A}}(K)
+=
+\inf_{h:Z_K\to\mathsf A}
+\mathbb E_\mu\!\left[\ell\bigl(\Phi(X),h(Q_K(X))\bigr)\right].
+\label{eq:receiver-risk}
+\end{equation}
+For fixed $\mu$, this is exactly the Bayes risk of the representation exposed by $K$; Bayes-sufficient representation theory studies the corresponding fixed-law decision problem \citep{sevetlidis2026bayes}. Here $K$ ranges over a declared internal receiver family and the paper compares the resulting risk profile across realized probability states. For a tolerance $\varepsilon\ge0$, write
+\[
+\Rcal_{\mu,\varepsilon}:=\{K\subseteq J:\delta_\mu(K)\le\varepsilon\}.
+\]
+The full risk profile and the thresholded circuit family are different objects.
+
+Here refinement is passive: $K'$ exposes additional receiver variables from the same realized computation rather than modifying the computation itself. Equation~\eqref{eq:receiver-garbling} exhibits the smaller receiver state as a deterministic garbling of the larger one, so receiver inclusion is a Blackwell comparison of experiments \citep{blackwell1951comparison,fritz2023experiments}.
+\begin{proposition}[Receiver inclusion is Blackwell refinement]
+\label{thm:receiver-defect-monotonicity}
+If $K\subseteq K'$, then
+\[
+\delta_\mu(K')\le \delta_\mu(K).
+\]
+\end{proposition}
+\begin{proof}
+For any rule $h:Z_K\to\mathsf A$, let $h'=h\circ p_{K'K}$. Equation~\eqref{eq:receiver-garbling} gives $h'Q_{K'}=hQ_K$ pointwise, so both rules have the same risk. Taking infima gives the claim.
+\end{proof}
+
+The proof uses only closure under forgetting added receiver coordinates. Hence every architecture-specific family satisfying
+\[
+h\in\mathscr H_K\quad\Longrightarrow\quad h\circ p_{K'K}\in\mathscr H_{K'}
+\qquad(K\subseteq K')
+\]
+inherits the same monotonicity law for $\delta_{\mu,\mathscr H}$. In ML terms, the decoder class available at $K'$ must be able to ignore the newly exposed coordinates. Appendix~A states this as a subfunctor result. Passive receiver access therefore has a monotonicity law whenever the admissible downstream class respects receiver refinement. If $K$ instead specifies an ablation, patching, retention, or rerun protocol, changing $K$ can change the state passed to the continuation; structural inclusion alone then does not imply Blackwell refinement.
+
+Distribution relativity does not make receiver adequacy unstable. Let
+\[
+d_{\TV}(\mu,\nu):=\sup_A|\mu(A)-\nu(A)|.
+\]
+If $0\le\ell\le1$, then
+\begin{equation}
+\sup_{K\subseteq J}|\delta_\mu(K)-\delta_\nu(K)|
+\le d_{\TV}(\mu,\nu).
+\label{eq:tv-main}
+\end{equation}
+Indeed, for each fixed rule the pointwise loss lies in $[0,1]$, so its expectations under $\mu$ and $\nu$ differ by at most $d_{\TV}(\mu,\nu)$; infimizing and exchanging $\mu,\nu$ gives \eqref{eq:tv-main}. Thus the entire receiver-risk profile is $1$-Lipschitz in total variation, even though optimizer identities and thresholded circuit families can change discontinuously when a decision boundary is crossed. Appendix~B gives the corresponding threshold-stability and finite polyhedral selection geometry.
