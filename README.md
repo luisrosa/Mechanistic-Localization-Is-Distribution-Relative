@@ -107,7 +107,7 @@ To run the finite checks:
 make check
 ```
 
-The anonymous ICLR 2027 upload package is preserved as [`submission-zips/mldr_iclr2027.zip`](submission-zips/mldr_iclr2027.zip). The current ICLR wrapper and shared scientific source remain in [`source/`](source/).
+The anonymous conference wrapper and submission package can also be generated from the same scientific source, but they are build products rather than the public face of the repository.
 
 ## Citation
 
