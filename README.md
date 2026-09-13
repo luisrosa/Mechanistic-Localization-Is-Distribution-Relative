@@ -1,130 +1,77 @@
 # Mechanistic Localization Is Distribution-Relative
 
-**Receiver sufficiency, context invariance, and the support shadow**  
+**Receiver Sufficiency, Context Invariance, and the Support Shadow**  
 Luis F. Rosario Freytes — University of Michigan
 
-This repository is the public research artifact for the current paper. It is designed to do four things at once: explain the argument to a human reader, provide the paper in one click, expose the exact theorem regime and validation record, and preserve the source packages used for arXiv and ICLR 2027.
+**[Read the paper](paper.pdf)** · **[LaTeX source](source/)**
 
-## Read the paper
+Mechanistic interpretability often talks as if a circuit were a property of the network alone: find the right heads, neurons, features, or edges and you have found where the mechanism is.
 
-- **[Current identified manuscript PDF](mechanistic_localization_is_distribution_relative.pdf)**
-- [identified arXiv source package](arxiv/)
-- [anonymous ICLR 2027 source package](iclr2027/)
-- [submission ZIPs](submission-zips/)
-- [claim ledger](CLAIMS.md)
-- [validation record](VALIDATION.md)
-
-## The story
-
-Mechanistic interpretability often asks where a computation is located inside a neural network. A common answer is a component set: a collection of neurons, heads, features, edges, or other internal variables that suffices for some phenomenon.
-
-The paper asks what has to be fixed before that statement has a definite meaning.
-
-Suppose the network is fixed. Fix the receiver being read, the target phenomenon, and even the literal set of possible states. Is the receiver-level realization now fixed?
+This paper asks a more basic question. Suppose the network is fixed. Suppose the receiver, target phenomenon, and even the literal support of the inputs are fixed. Is the receiver-level mechanism now fixed?
 
 No.
 
-### Same support, opposite optimal rule
+## Same network, same support, different rule
 
-Let
+Take
 
 ```math
 X=\{0,1\}^2,\qquad \Phi(x_1,x_2)=x_1,\qquad Q_2(x_1,x_2)=x_2.
 ```
 
-For `0 < eta < 1/2`, put most probability mass on the diagonal states `00,11`. Through receiver `Q_2`, the Bayes-optimal 0-1 rule is then
+Put most probability mass on the diagonal states `00,11`. Through the receiver `Q_2`, the Bayes-optimal rule is
 
 ```math
-h_{\mu_\eta}(z)=z.
+h_\mu(z)=z.
 ```
 
-Reverse the diagonal and off-diagonal weights while leaving the support equal to all of `X`. The Bayes-optimal rule through the same receiver becomes
+Now reverse the diagonal and off-diagonal weights while keeping the support equal to all of `X`. The optimal rule through the **same receiver in the same network** becomes
 
 ```math
-h_{\nu_\eta}(z)=1-z.
+h_\nu(z)=1-z.
 ```
 
-Nothing about the network, target, receiver, or literal support changed. Only the probability weights changed. Passing from a realized probability law to its support therefore discards exactly the information that selected the receiver-level rule.
+Nothing structural changed. Only the realized probability law changed.
 
-That forces a distinction between three objects:
+That is the central point of the paper: a component set does not by itself determine the rule realized through the state it exposes. The localization problem has to distinguish
 
 ```math
-K\longrightarrow (K,h)\longrightarrow [hQ_K]_\mu.
+K\longrightarrow (K,h)\longrightarrow [hQ_K]_\mu,
 ```
 
-They record, respectively,
+where `K` says where we read, `(K,h)` says how the exposed state is used, and `[hQ_K]_\mu` is the action actually induced on the realized population.
 
-```text
-where the analysis reads
-→ how the exposed state is used
-→ what action is induced on the realized population.
-```
+## Two different questions appear
 
-A component set is therefore not a complete localization specification.
+Once those objects are separated, two things that look similar at first behave very differently.
 
-## What has to be declared
-
-The paper treats a mechanistic-localization claim as relative to a realized probability state, a receiver interface, an admissible downstream-use class, a target phenomenon, and an adequacy criterion:
-
-```text
-realized state μ
-+ receiver access Q
-+ admissible decoder class H
-+ phenomenon Φ
-+ loss / adequacy criterion ℓ
-(+ threshold ε when a discrete circuit family is reported)
------------------------------------------------------------
-mechanistic-localization claim
-```
-
-The receiver map says what internal state is exposed. The decoder class says what may be done with that state. The maximal measurable decoder class isolates receiver sufficiency itself; restricting that class specializes the construction to a concrete downstream architecture or continuation protocol.
-
-## Two laws separate
-
-Once the objects are separated, passive receiver refinement has a clean monotonicity law. If `K ⊆ K'`, the larger receiver state can ignore its extra coordinates and reproduce every rule available through the smaller one, so
+For **predictive adequacy**, more passive receiver access can only help. If `K ⊆ K'`, the larger receiver can always ignore its extra coordinates, so
 
 ```math
 \delta_\mu(K')\le \delta_\mu(K).
 ```
 
-More exposed receiver information cannot worsen optimal predictive adequacy.
-
-Context invariance behaves differently. Let `C` index contexts and let `Gamma_K` be the excess Bayes risk incurred when one decoder must serve the pooled population instead of allowing a context-specific optimum. Under log loss,
+For **context invariance**, there is no corresponding monotonicity law. Under log loss, the value of revealing context is
 
 ```math
-\Gamma_K^{\log}=I(Y_\Phi;C\mid Q_K(X)).
+\Gamma_K^{\log}=I(Y_\Phi;C\mid Q_K(X)),
 ```
 
-Adding receiver `j` changes this quantity by
+and adding one receiver changes it by
 
 ```math
 I(Y_\Phi;Q_j\mid Q_K,C)-I(Y_\Phi;Q_j\mid Q_K).
 ```
 
-Either sign occurs. More receiver information can make one common rule easier to sustain across distributions or harder to sustain.
+That quantity can be positive or negative. More internal information can make one rule easier to reuse across contexts or harder to reuse.
 
-So the same refinement order produces two different behaviors:
+So "this receiver predicts the phenomenon" and "this receiver supports the same mechanism across distributions" are different claims.
 
-```text
-predictive adequacy: monotone under passive receiver refinement
-context invariance: no general monotonicity law
-```
+## Why support still shows up
 
-## The support shadow
+The earlier support-relative picture is not thrown away. It appears as the exact, zero-loss shadow of the richer distribution-relative problem.
 
-Exact zero-loss localization is a coarser problem. Almost-sure exact realization forgets probability weights inside a measure class; in finite discrete settings that coarse-graining reduces to support.
-
-```math
-\text{probability state}
-\longrightarrow
-\text{measure class}
-\longrightarrow
-\text{support}
-\longrightarrow
-\text{functional dependency / reduct structure}.
-```
-
-For finite 0-1 problems,
+In finite `0–1` settings,
 
 ```math
 \delta_\mu(K)=0
@@ -134,58 +81,42 @@ For finite 0-1 problems,
 \operatorname{Eq}(Q_K|_S)\subseteq\operatorname{Eq}(\Phi|_S).
 ```
 
-Equivalently, the selected receivers must hit every target-relevant state pair that needs to be distinguished. This is the exact support shadow of the distribution-relative problem.
+At zero loss, probability weights disappear and the problem collapses to which target-relevant distinctions survive on the support. That is where the functional-dependency and hitting-set structure comes from.
 
-This also explains the relation to the earlier support-relative project: support-relative localization is not discarded here; it appears as the zero-loss coarse-graining of the richer distributional theory. The earlier public artifact is preserved separately at [mechanistic-localization-is-support-relative](https://github.com/luisrosa/mechanistic-localization-is-support-relative).
+The paper calls this the **support shadow**: exact localization is a coarse-graining of the distribution-relative problem, not a competing theory.
 
-## Fixing the network still does not fix the exact circuit
+## One fixed network can realize every admissible exact localization family
 
-The final structural result freezes the architecture, target, and receiver granularity and varies support alone.
+The strongest structural example fixes a Boolean OR network and its coordinate receivers. By varying support alone, that one network realizes every nonempty upward-closed exact localization family.
 
-Consider one Boolean OR network
+So even at the exact support level, fixing the architecture does not select one canonical circuit. The realized population is part of the localization claim.
 
-```math
-\{0,1\}^J\xrightarrow{\mathrm{id}}\{0,1\}^J\xrightarrow{\mathrm{OR}}\{0,1\}
-```
+## What is in this repository
 
-with fixed coordinate receivers. Every nonempty upward-closed exact localization family can be realized in this one network by choosing an appropriate support.
+The maintained manuscript is in [`source/`](source/). The small finite checks used while developing the examples are in [`scripts/check_examples.py`](scripts/check_examples.py).
 
-Upward closure is the constraint already forced by passive receiver inclusion. Within that constraint, support variation alone exhausts the admissible exact-localization families. Architecture therefore does not select a canonical exact circuit at the receiver-sufficiency level.
-
-## What different experimental choices change
-
-| Experimental choice | Formal argument | What may change |
-| --- | --- | --- |
-| input / prompt distribution | `μ` | optimal rule, receiver risk, context value, selected circuit |
-| mediator / representation granularity | `Q` | the localization problem itself |
-| downstream architecture or continuation class | `H` | realizable receiver-level rules and optimal risk |
-| target behavior | `Φ` | which distinctions receivers must preserve |
-| adequacy criterion | `ℓ` | optimal action and receiver risk |
-| selection threshold | `ε` | reported discrete circuit family |
-| passive receiver set | `K` | predictive risk, monotonically under refinement |
-| ablation / patch / rerun protocol | realized process | the induced experiment; passive Blackwell order need not apply |
-
-This is the practical reading of the theory: two papers that report different component subsets may have changed different arguments of the mechanistic claim, while two papers that report the same subset may still realize different receiver-level rules on different populations.
-
-## Repository organization
-
-```text
-source/             canonical scientific source and the two wrappers
-arxiv/              standalone identified source package
-iclr2027/           standalone anonymous ICLR 2027 package
-submission-zips/    upload-ready ZIPs generated from those directories
-scripts/            finite checks and package verification
-releases/           frozen release provenance
-```
-
-The two submission directories are intentionally standalone. Each can be copied out of the repository, compiled independently, and zipped without depending on the other package or on the private development repository.
-
-### Rebuild everything
+To build the identified paper:
 
 ```bash
-make all
+make paper
 ```
 
-The release pipeline runs the finite regression suite, constructs both submission directories and ZIPs, compiles both manuscript variants, verifies the package manifests and anonymity/identity invariants, and builds the stable identified PDF at repository root.
+To run the finite checks:
 
-For the exact theorem regime and explicit nonclaims, see [`CLAIMS.md`](CLAIMS.md). For what was checked computationally and what remains a mathematical proof in the manuscript, see [`VALIDATION.md`](VALIDATION.md).
+```bash
+make check
+```
+
+The anonymous conference wrapper and submission package can also be generated from the same scientific source, but they are build products rather than the public face of the repository.
+
+## Citation
+
+```bibtex
+@article{rosariofreytes2026mechanistic,
+  title  = {Mechanistic Localization Is Distribution-Relative: Receiver Sufficiency, Context Invariance, and the Support Shadow},
+  author = {Rosario Freytes, Luis F.},
+  year   = {2026}
+}
+```
+
+Citation metadata are also available in [`CITATION.cff`](CITATION.cff).
