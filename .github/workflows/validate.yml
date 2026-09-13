@@ -47,5 +47,5 @@ jobs:
         run: make paper
       - name: PDF preflight
         run: |
-          pdfinfo paper.pdf >/dev/null
+          pdfinfo mechanistic_localization_is_distribution_relative.pdf >/dev/null
           pdfinfo iclr2027/main.pdf >/dev/null
