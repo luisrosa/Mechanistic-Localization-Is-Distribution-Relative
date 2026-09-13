@@ -107,7 +107,7 @@ To run the finite checks:
 make check
 ```
 
-The anonymous conference wrapper and submission package can also be generated from the same scientific source, but they are build products rather than the public face of the repository.
+The anonymous ICLR 2027 source package is preserved in [`iclr2027/`](iclr2027/), with the corresponding upload archive in [`submission-zips/mldr_iclr2027.zip`](submission-zips/mldr_iclr2027.zip).
 
 ## Citation
 
