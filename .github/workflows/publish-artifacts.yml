@@ -29,11 +29,11 @@ jobs:
           sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra lmodern zip unzip
       - name: Build and verify complete artifact
         run: make all
-      - name: Commit generated packages, ZIPs, and PDF
+      - name: Commit generated packages, ZIPs, PDF, and release hashes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f arxiv iclr2027 submission-zips mechanistic_localization_is_distribution_relative.pdf
+          git add -f arxiv iclr2027 submission-zips mechanistic_localization_is_distribution_relative.pdf releases/v1.0/SHA256SUMS.txt
           if git diff --cached --quiet; then
             echo "Generated artifacts are already current."
           else
