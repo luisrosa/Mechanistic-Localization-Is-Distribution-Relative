@@ -1,4 +1,4 @@
-name: Build paper PDF
+name: Build paper and submission packages
 
 on:
   push:
@@ -13,8 +13,8 @@ permissions:
   contents: write
 
 jobs:
-  build-pdf:
-    if: ${{ !contains(github.event.head_commit.message, '[skip pdf]') }}
+  build-artifacts:
+    if: ${{ !contains(github.event.head_commit.message, '[skip artifacts]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,16 +27,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra zip unzip
-      - name: Build identified paper
-        run: make paper
-      - name: Commit current PDF
+      - name: Build paper and standalone submission packages
+        run: |
+          make submission
+          make paper
+      - name: Commit current paper, source packages, and upload ZIPs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f mechanistic_localization_is_distribution_relative.pdf
+          git add -f mechanistic_localization_is_distribution_relative.pdf arxiv iclr2027 submission-zips
           if git diff --cached --quiet; then
-            echo "The manuscript PDF is already current."
+            echo "Generated manuscript artifacts are already current."
           else
-            git commit -m "Update manuscript PDF [skip pdf]"
+            git commit -m "Update manuscript artifacts [skip artifacts]"
             git push origin HEAD:main
           fi
