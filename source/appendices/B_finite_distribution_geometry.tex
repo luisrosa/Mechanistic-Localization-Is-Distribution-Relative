@@ -1,0 +1,111 @@
+\section{Finite distribution geometry}
+\label{app:finite-distribution-geometry}
+
+This appendix records finite-space consequences of the distribution-relative receiver Bayes risk that are useful for structural selection analysis but not needed for the main theorem spine.
+
+Assume throughout that $X$, $Y$, and all receiver images are finite and specialize to
+\[
+\mathsf A=Y,
+\qquad
+\ell(y,\hat y)=\mathbf 1[y\neq\hat y].
+\]
+
+\subsection{Threshold stability away from a boundary}
+
+For a tolerance $\varepsilon\in[0,1]$, define
+\[
+\gamma_{\mu,\varepsilon}
+:=
+\min_{K\subseteq J}
+|\delta_\mu(K)-\varepsilon|.
+\]
+
+\begin{corollary}[Localization-family stability radius]
+\label{cor:app-localization-family-stability}
+If $\gamma_{\mu,\varepsilon}>0$ and
+\[
+d_{\TV}(\mu,\nu)<\gamma_{\mu,\varepsilon},
+\]
+then
+\[
+\Rcal_{\mu,\varepsilon}
+=
+\Rcal_{\nu,\varepsilon}.
+\]
+Hence their inclusion-minimal localization antichains are also equal.
+\end{corollary}
+
+\begin{proof}
+The main-text TV-Lipschitz theorem implies
+\[
+|\delta_\mu(K)-\delta_\nu(K)|
+<\gamma_{\mu,\varepsilon}
+\]
+for every $K$. Every defect value therefore remains on the same side of the threshold $\varepsilon$.
+\end{proof}
+
+\subsection{Finite receiver risk is piecewise linear}
+
+For fixed $K$, write
+\[
+p_{z,y}^\mu
+:=
+\mu\{x:Q_K(x)=z,\ \Phi(x)=y\}.
+\]
+
+\begin{proposition}[Finite receiver risk is ordinary Bayes classification error]
+\label{thm:app-bayes-defect-formula}
+For every receiver family $K$,
+\[
+\delta_\mu(K)
+=
+1-\sum_{z\in Z_K}\max_{y\in Y}p_{z,y}^\mu.
+\]
+In particular, $\mu\mapsto\delta_\mu(K)$ is concave and piecewise linear on the probability simplex $\Delta(X)$.
+\end{proposition}
+
+\begin{proof}
+For a rule $h:Z_K\to Y$,
+\[
+R_\mu(K,h)
+=
+1-\sum_{z\in Z_K}p_{z,h(z)}^\mu.
+\]
+Each receiver value can be optimized independently, so the largest correct mass at $z$ is $\max_y p_{z,y}^\mu$.
+\end{proof}
+
+\subsection{Polyhedral selection geometry}
+
+\begin{proposition}[Finite localization cells]
+\label{thm:app-polyhedral-localization-cells}
+Fix a finite receiver family $J$ and tolerance $\varepsilon\in[0,1]$. There is a finite polyhedral subdivision of $\Delta(X)$ such that on the relative interior of every cell:
+\begin{enumerate}[label=(\roman*)]
+\item the optimizer set $\Opt_\mu(K)$ is constant for every $K\subseteq J$;
+\item the thresholded localization family $\Rcal_{\mu,\varepsilon}$ is constant;
+\item the inclusion-minimal localization antichain
+\[
+\Mcal_{\mu,\varepsilon}:=\Min_{\subseteq}\Rcal_{\mu,\varepsilon}
+\]
+is constant.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For fixed $K$ and $h$, the map
+\[
+\mu\longmapsto R_\mu(K,h)
+\]
+is affine. Partition the finite decoder set into classes whose members induce identical affine risk functionals. Distinct classes can exchange optimizer status only on nontrivial tie hyperplanes
+\[
+R_\mu(K,h)=R_\mu(K,h'),
+\]
+and threshold membership can change only on nontrivial hyperplanes
+\[
+R_\mu(K,h)=\varepsilon.
+\]
+The finite arrangement of these hyperplanes together with the faces of $\Delta(X)$ yields a finite polyhedral subdivision. On each relative interior the ordering and equality pattern of all distinct risk functionals, and their signs relative to $\varepsilon$, are fixed. The optimizing equivalence classes are therefore fixed; every decoder inside one such class enters or leaves the optimizer set together, so the full set $\Opt_\mu(K)$ is fixed as well. The thresholded family and its inclusion-minimal members are then fixed on the same cell.
+\end{proof}
+
+We use \emph{localization cell} for a cell of such a subdivision and reserve \emph{input regime} or \emph{context} for the scientific population being analyzed. The distinction avoids overloading the word ``regime.''
+
+The main text uses only the consequence needed for interpretation: quantitative receiver risks vary continuously under TV shift, while optimizer identities and thresholded selections can change discretely at decision boundaries.
