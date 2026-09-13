@@ -1,4 +1,4 @@
-name: Publish generated manuscript artifacts
+name: Build paper PDF
 
 on:
   push:
@@ -13,8 +13,8 @@ permissions:
   contents: write
 
 jobs:
-  build-and-commit:
-    if: ${{ !contains(github.event.head_commit.message, '[skip artifacts]') }}
+  build-pdf:
+    if: ${{ !contains(github.event.head_commit.message, '[skip pdf]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,20 +23,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install build dependencies
+      - name: Install LaTeX dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra lmodern zip unzip
-      - name: Build and verify complete artifact
-        run: make all
-      - name: Commit generated packages, ZIPs, PDF, and release hashes
+          sudo apt-get install -y latexmk texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra zip unzip
+      - name: Build identified paper
+        run: make paper
+      - name: Commit current PDF
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f arxiv iclr2027 submission-zips mechanistic_localization_is_distribution_relative.pdf releases/v1.0/SHA256SUMS.txt
+          git add -f paper.pdf
           if git diff --cached --quiet; then
-            echo "Generated artifacts are already current."
+            echo "paper.pdf is already current."
           else
-            git commit -m "Build public manuscript artifacts [skip artifacts]"
+            git commit -m "Update paper PDF [skip pdf]"
             git push origin HEAD:main
           fi
